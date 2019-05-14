@@ -20,7 +20,11 @@ module.exports = function validateMatchInfoInput(data) {
   data.man_of_match = !isEmpty(data.man_of_match) ? data.man_of_match : "";
   data.win_margin = !isEmpty(data.win_margin) ? data.win_margin : "";
 
-  // Team 1 checks
+  // Match No checks
+  if (!Validator.isInt(data.match_no)) {
+    errors.match_no = "Match No should be Integer.";
+  }
+
   if (Validator.isEmpty(data.team1)) {
     errors.team1 = "Team 1 field is required";
   }

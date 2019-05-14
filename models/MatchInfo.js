@@ -3,6 +3,11 @@ const Schema = mongoose.Schema;
 
 // Create MatchInfo Schema
 const MatchInfoSchema = new Schema({
+  match_no: {
+    type: Number,
+    required: true,
+    min: 1
+  },
   team1: {
     type: String,
     required: true

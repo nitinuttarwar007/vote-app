@@ -114,17 +114,19 @@ router.post("/matchinfo", (req, res) => {
   // Form validation
   const { errors, isValid } = validateMatchInfoInput(req.body);
 
+  console.log(errors, isValid);
   // Check validation
   if (!isValid) {
     return res.status(400).json(errors);
   }
 
-  MatchInfo.findOne({ match_date: req.body.match_date }).then(matchinfo => {
+  MatchInfo.findOne({ match_no: req.body.match_no }).then(matchinfo => {
     if (matchinfo) {
       return res.status(400).json({ match_date: "Match data already exists" });
     } else {
       console.log(req.body);
       const matchinfo = new MatchInfo({
+        match_no: req.body.match_no,
         team1: req.body.team1,
         team2: req.body.team2,
         match_date: req.body.match_date,
@@ -143,6 +145,14 @@ router.post("/matchinfo", (req, res) => {
       matchinfo.save().then(matchinfo => res.json(matchinfo)).catch(err => console.log(err));
     }
   });
+});
+
+//setting _id and __v it to 0 in the projection to remove from result
+router.get("/matches", (req, res) => {
+  MatchInfo.find({},{_id: 0, __v: 0}).then(match => {
+    console.log("Match", match);
+    res.send(match);
+  })
 });
 
 module.exports = router;
